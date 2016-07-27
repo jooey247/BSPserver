@@ -14,6 +14,10 @@ public class PlaceInfo{
     private String plcOption;
     private String userName;
     
+    public PlaceInfo(){
+    	
+    }
+    
 
     public PlaceInfo(String plcId, String plcPw) {
         this.plcId = plcId;

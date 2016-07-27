@@ -60,5 +60,8 @@ public class UserInfo {
         this.userId = userId;
         this.userPw = userPw;
     }
+    public UserInfo(){
+    	
+    }
 }
 

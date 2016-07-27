@@ -82,14 +82,18 @@ public class MainController {
 	public @ResponseBody String addUser(@RequestBody UserInfo user) {
 		//doesnt exist same information (일치하는 정보가 없다)
 		if (userInfoRepository.findOne(user.getUserId()) == null) {
+			System.out.println("★★★★★★★회원가입 성공★★★★★");
 			
 			//save information (정보를 저장하고)
 			userInfoRepository.save(user);
 			return "success";
 		}
 		//exist same information (일치하는 정보가 존재한다면)
-		else
+		else{
+			System.out.println("★★★★★★아이디 중복★★★★★★");
 			return "duplicate";
+
+		}
 	}
 
 	// 2016.07.27 seulki
