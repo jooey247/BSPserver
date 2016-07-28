@@ -27,16 +27,22 @@ public class MainController {
 		PlaceInfo foundPlace = placeInfoRepository.findOne(place.getPlcId());
 
 		// Doesn't exist user info (플레이 정보가 없을 경우)
-		if (foundPlace == null)
+		if (foundPlace == null){
+			System.out.println("place★★★★★★아이디 없음★★★★★★");
 			return "fail";
+		}
 		else {
 			// collect password (패스워드가 일치할 경우)
-			if (place.getPlcPw().equals(foundPlace.getPlcPw()))
+			if (place.getPlcPw().equals(foundPlace.getPlcPw())){
+				System.out.println("place★★★★★★로그인 성공★★★★★★");
 				return "success";
+			}
 
 			// wrong password (패스워드를 틀렸을 경우)
-			else
+			else{
+				System.out.println("place★★★★★★비밀번호 없음★★★★★★");
 				return "fail";
+			}
 
 		}
 	}
@@ -48,16 +54,22 @@ public class MainController {
 		UserInfo foundUser = userInfoRepository.findOne(user.getUserId());
 
 		// Doesn't exist user info (사용자 정보가 없을 경우)
-		if (foundUser == null)
+		if (foundUser == null){
+			System.out.println("user★★★★★★아이디 없음★★★★★★");
 			return "fail";
+		}
 		else {
 			// collect password (패스워드가 일치할 경우)
-			if (user.getUserPw().equals(foundUser.getUserPw()))
+			if (user.getUserPw().equals(foundUser.getUserPw())){
+				System.out.println("user★★★★★★로그인 성공★★★★★★");
 				return "success";
+			}
 
 			// wrong password (패스워드를 틀렸을 경우)
-			else
+			else{
+				System.out.println("user★★★★★★비밀번호 없음★★★★★★");
 				return "fail";
+			}
 
 		}
 	}
@@ -82,15 +94,15 @@ public class MainController {
 	public @ResponseBody String addUser(@RequestBody UserInfo user) {
 		//doesnt exist same information (일치하는 정보가 없다)
 		if (userInfoRepository.findOne(user.getUserId()) == null) {
-			System.out.println("★★★★★★★회원가입 성공★★★★★");
+			System.out.println("user ★★★★★★★회원가입 성공★★★★★");
 			
 			//save information (정보를 저장하고)
 			userInfoRepository.save(user);
 			return "success";
 		}
 		//exist same information (일치하는 정보가 존재한다면)
-		else{
-			System.out.println("★★★★★★아이디 중복★★★★★★");
+		else {
+			System.out.println("user ★★★★★★아이디 중복★★★★★★");
 			return "duplicate";
 
 		}
@@ -103,6 +115,7 @@ public class MainController {
 
 		//doesnt exist same information (일치하는 정보가 없다)
 		if (placeInfoRepository.findOne(place.getPlcId()) == null) {
+			System.out.println("place★★★★★★★회원가입 성공★★★★★");
 			
 			//save information (정보를 저장하고)
 			placeInfoRepository.save(place);
@@ -111,8 +124,10 @@ public class MainController {
 		}
 
 		//exist same information (일치하는 정보가 존재한다면)
-		else
+		else{
+			System.out.println("place★★★★★★아이디 중복★★★★★★");
 			return "duplicate";
+		}
 			
 	}
 }
