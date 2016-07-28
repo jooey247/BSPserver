@@ -44,6 +44,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>cse.knu.ac.kr.daegu</groupId>
+			<artifactId>BeaconSecurityProj</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

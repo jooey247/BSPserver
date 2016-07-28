@@ -1,7 +1,11 @@
 package cse.knu.ac.kr.daegu;
 
+
+
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 @Entity
 public class PlaceInfo{
@@ -11,8 +15,11 @@ public class PlaceInfo{
     private String plcName;
     private String plcPw;
     private String plcAdrs;
-    private String plcOption;
     private String userName;
+    
+    @OneToMany( mappedBy = "placeInfo")
+    private List<BeaconInfo> beaconInfo;
+    
     
     public PlaceInfo(){
     	
@@ -24,12 +31,12 @@ public class PlaceInfo{
         this.plcPw = plcPw;
     }
 
-    public PlaceInfo(String plcId, String plcName, String plcPw, String plcAdrs, String plcOption, String userName) {
+    public PlaceInfo(String plcId, String plcName, String plcPw, String plcAdrs, List<BeaconInfo> beaconInfo, String userName) {
         this.plcId = plcId;
         this.plcName = plcName;
         this.plcPw = plcPw;
         this.plcAdrs = plcAdrs;
-        this.plcOption = plcOption;
+        this.beaconInfo = beaconInfo;
         this.userName = userName;
     }
     
@@ -75,15 +82,13 @@ public class PlaceInfo{
         this.plcAdrs = plcAdrs;
     }
 
-    public String getPlcOption() {
-        return plcOption;
+    public List<BeaconInfo> getbeaconInfo() {
+        return beaconInfo;
     }
 
-    public void setPlcOption(String plcOption) {
-        this.plcOption = plcOption;
+    public void setbeaconInfo(BeaconInfo beaconInfo) {
+        this.beaconInfo.add(beaconInfo);
     }
-    
-    
 
 }
 
@@ -103,7 +108,7 @@ public class PlaceInfo {
    private String plcName;
    private String plcPw;
    private String plcAdrs;
-   private String plcOption;
+   private String beaconInfo;
    
    //FK
    @JoinColumn
