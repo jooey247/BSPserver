@@ -140,21 +140,25 @@ public class MainController {
 	}
 	
 	//2016.07.28 seulki
-	@RequestMapping("/mainscreen/bcon_sign/{plcId}")
+	@RequestMapping("/mainscreen/{plcId}/bcon_sign")
 	public @ResponseBody String bcon_sign(@PathVariable String plcId, @RequestBody BeaconInfo Bcon){
 		
 		PlaceInfo foundplace = placeInfoRepository.findOne(plcId);
 		
+		//dosent exist plcId(해당 plcId가 없으면)
 		if(foundplace == null)
 		{
-			System.out.println("place ★★★★★★Plc Id 일치하는 정보 없★★★★★★");
+			System.out.println("place ★★★★★★Plc Id 일치하는 정보 ★★★★★★");
 			return "fail";
 		}
 		
+		//exist plcId(해당 plcId가 존재하면)
 		else
 		{
+			//해당하는 placeInfo에 비콘 정보를 업데이트 하
 			foundplace.setbeaconInfo(Bcon);
 			
+			//다시 테이블에 저장
 			placeInfoRepository.save(foundplace);
 			
 			System.out.println("place ★★★★★★PlaceInfo 정보 없데이★★★★★★");
