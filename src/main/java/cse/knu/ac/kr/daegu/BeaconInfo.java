@@ -12,8 +12,9 @@ public class BeaconInfo {
 	//@ManyToOne
 	private PlaceInfo placeInfo;
 	
-	public BeaconInfo()
-	{
+
+	public BeaconInfo(){
+
 		
 	}
 
