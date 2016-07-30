@@ -17,7 +17,7 @@ public class PlaceInfo{
     private String plcAdrs;
     private String userName;
     
-    @OneToMany( mappedBy = "placeInfo")
+    //@OneToMany( mappedBy = "placeInfo")
     private List<BeaconInfo> beaconInfo;
     
     

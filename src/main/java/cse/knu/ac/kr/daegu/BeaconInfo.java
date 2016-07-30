@@ -9,9 +9,13 @@ public class BeaconInfo {
 	private String beaOption;
 	private String beaAdr;
 	
-	@ManyToOne
+	//@ManyToOne
 	private PlaceInfo placeInfo;
 	
+	public BeaconInfo()
+	{
+		
+	}
 
 	public BeaconInfo(String beaMcadr, String beaOption, String beaAdr) {
 		this.beaMcadr = beaMcadr;
