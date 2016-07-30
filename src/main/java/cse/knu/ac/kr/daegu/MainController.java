@@ -30,19 +30,19 @@ public class MainController {
 	      // Doesn't exist user info (플레이 정보가 없을 경우)
 	      if (foundPlace == null){
 	         System.out.println("place★★★★★★아이디 없음★★★★★★");
-	         return "fail";
+	         return "login_fail";
 	      }
 	      else {
 	         // collect password (패스워드가 일치할 경우)
 	         if (place.getPlcPw().equals(foundPlace.getPlcPw())){
 	            System.out.println("place★★★★★★로그인 성공★★★★★★");
-	            return "success";
+	            return "login_success";
 	         }
 
 	         // wrong password (패스워드를 틀렸을 경우)
 	         else{
 	            System.out.println("place★★★★★★비밀번호 없음★★★★★★");
-	            return "fail";
+	            return "login_fail";
 	         }
 
 	      }
@@ -57,19 +57,19 @@ public class MainController {
 	      // Doesn't exist user info (사용자 정보가 없을 경우)
 	      if (foundUser == null){
 	         System.out.println("user★★★★★★아이디 없음★★★★★★");
-	         return "fail";
+	         return "login_fail";
 	      }
 	      else {
 	         // collect password (패스워드가 일치할 경우)
 	         if (user.getUserPw().equals(foundUser.getUserPw())){
 	            System.out.println("user★★★★★★로그인 성공★★★★★★");
-	            return "success";
+	            return "login_success";
 	         }
 
 	         // wrong password (패스워드를 틀렸을 경우)
 	         else{
 	            System.out.println("user★★★★★★비밀번호 없음★★★★★★");
-	            return "fail";
+	            return "login_fail";
 	         }
 
 	      }
@@ -85,12 +85,12 @@ public class MainController {
 	         
 	         //save information (정보를 저장하고)
 	         userInfoRepository.save(user);
-	         return "success";
+	         return "signup_success";
 	      }
 	      //exist same information (일치하는 정보가 존재한다면)
 	      else {
 	         System.out.println("user ★★★★★★아이디 중복★★★★★★");
-	         return "duplicate";
+	         return "signup_duplicate";
 
 	      }
 	   }
@@ -107,13 +107,13 @@ public class MainController {
 	         //save information (정보를 저장하고)
 	         placeInfoRepository.save(place);
 
-	         return "success";
+	         return "signup_success";
 	      }
 
 	      //exist same information (일치하는 정보가 존재한다면)
 	      else{
 	         System.out.println("place★★★★★★아이디 중복★★★★★★");
-	         return "duplicate";
+	         return "signup_duplicate";
 	      }
 
 	}
@@ -148,24 +148,35 @@ public class MainController {
 		//dosent exist plcId(해당 plcId가 없으면)
 		if(foundplace == null)
 		{
-			System.out.println("place ★★★★★★Plc Id 일치하는 정보 ★★★★★★");
+			System.out.println("place ★★★★★★Plc Id 일치하는 정보 없음 ★★★★★★");
 			return "fail";
 		}
 		
 		//exist plcId(해당 plcId가 존재하면)
 		else
 		{
-			//해당하는 placeInfo에 비콘 정보를 업데이트 하
+			//해당하는 placeInfo에 비콘 정보를 업데이트 하고 
 			foundplace.setbeaconInfo(Bcon);
 			
 			//다시 테이블에 저장
 			placeInfoRepository.save(foundplace);
 			
-			System.out.println("place ★★★★★★PlaceInfo 정보 없데이★★★★★★");
+			System.out.println("place ★★★★★★PlaceInfo 정보 없데이트 ★★★★★★");
 			
 			return "success";
 		}
 	}
 	
+	//2016.07.29 seulki
+	//search placeId and return (플레이스 아이디로 검색 후 해당하는 플레이스 정보를 반환)
+	@RequestMapping("/users/{plcId}")
+	public @ResponseBody PlaceInfo getPlace(@PathVariable String plcId){
+		return placeInfoRepository.findOne(plcId);
+	}
+	
+	//2016.07.29 seulki
+//	@RequestMapping("/뭘 써야 할까....")
+//	public @ResponseBody 
+
 }
 
