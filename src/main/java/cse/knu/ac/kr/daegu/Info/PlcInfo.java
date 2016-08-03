@@ -24,14 +24,14 @@ public class PlcInfo{
 	@Column(name="plcOption",nullable=false)
     private int plcOption;   
 	
-	@ManyToMany(mappedBy="PlcInfo")
+	@ManyToMany
 	private List<UserInfo> userinfos;
     
     @ManyToOne
     @JoinColumn(name="mngId")
     private MngInfo mngInfo;
     
-    @OneToMany(mappedBy = "PlcInfo")
+    @OneToMany(mappedBy = "plcInfo")
     private List<BeaconInfo> beaconInfos = new ArrayList<>();
      
     
