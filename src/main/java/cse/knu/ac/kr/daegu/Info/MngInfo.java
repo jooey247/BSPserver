@@ -22,7 +22,7 @@ public class MngInfo {
 	@Column(name="mngAdrs")
 	private String mngAdrs;
 	
-	@OneToMany(mappedBy="MngInfo")
+	@OneToMany(mappedBy="mngInfo")
 	private List<PlcInfo> plcinfos = new ArrayList<>();
 	
 
