@@ -1,29 +1,32 @@
-package cse.knu.ac.kr.daegu;
+package cse.knu.ac.kr.daegu.Info;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 
 /**
  * Created by juhee on 2016-07-15.
  */
-@Entity
+@Entity(name="UserInfo")
 public class UserInfo {
 
 	@Id
     private String userId;
     private String userPw;
     private String userName;
-    private String plcName;
-   
-
-    public String getPlcName()
-    {
-    	return plcName;
-    }
     
-    public void setPlcName(String plcName){
-    	this.plcName= plcName;
-    }
+   
+   @ManyToMany
+   @JoinTable(name="USER_PLC", joinColumns=@JoinColumn(name="PLCINFO_plcid"),
+   				inverseJoinColumns=@JoinColumn(name="USERINFO_userId"))
+   private List<PlcInfo> plcInfos = new ArrayList<>();
+
     
     public String getuserName() {
         return userName;
@@ -49,10 +52,10 @@ public class UserInfo {
         this.userId = userId;
     }
 
-    public UserInfo(String userId, String userPw, String plcName,String userName) {
+    public UserInfo(String userId, String userPw,String userName) {
         this.userId = userId;
         this.userPw = userPw;
-        this.plcName = plcName;
+
         this.userName= userName;
     }
 

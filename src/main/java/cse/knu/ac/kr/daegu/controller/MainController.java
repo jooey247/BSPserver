@@ -1,4 +1,4 @@
-package cse.knu.ac.kr.daegu;
+package cse.knu.ac.kr.daegu.controller;
 
 import java.util.List;
 
@@ -10,6 +10,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import cse.knu.ac.kr.daegu.Info.BeaconInfo;
+import cse.knu.ac.kr.daegu.Info.PlcInfo;
+import cse.knu.ac.kr.daegu.Info.UserInfo;
+import cse.knu.ac.kr.daegu.repo.PlcInfoRepository;
+import cse.knu.ac.kr.daegu.repo.UserInfoRepository;
+
 
 @RestController
 public class MainController {
@@ -17,15 +23,15 @@ public class MainController {
 	@Autowired
 	private UserInfoRepository userInfoRepository;
 	@Autowired
-	private PlaceInfoRepository placeInfoRepository;
+	private PlcInfoRepository placeInfoRepository;
 
 	
 	//<login>
 	// 2016.07.27 seulki
 	// login_place
 	@RequestMapping("/users_login/place")
-	   public @ResponseBody String login(@RequestBody PlaceInfo place) {
-	      PlaceInfo foundPlace = placeInfoRepository.findOne(place.getPlcId());
+	   public @ResponseBody String login(@RequestBody PlcInfo place) {
+	      PlcInfo foundPlace = placeInfoRepository.findOne(place.getPlcId());
 
 	      // Doesn't exist user info (플레이 정보가 없을 경우)
 	      if (foundPlace == null){
@@ -98,7 +104,7 @@ public class MainController {
 	   // 2016.07.27 seulki
 	   // add new place (새로운 place 추가)
 	   @RequestMapping(value = "/users/place", method = RequestMethod.POST, consumes = "application/json")
-	   public @ResponseBody String addUser(@RequestBody PlaceInfo place) {
+	   public @ResponseBody String addUser(@RequestBody PlcInfo place) {
 
 	      //doesnt exist same information (일치하는 정보가 없다)
 	      if (placeInfoRepository.findOne(place.getPlcId()) == null) {
@@ -140,15 +146,18 @@ public class MainController {
 	}
 	
 	//2016.07.28 seulki
+	//place가 비콘등록
 	@RequestMapping("/mainscreen/{plcId}/bcon_sign")
 	public @ResponseBody String bcon_sign(@PathVariable String plcId, @RequestBody BeaconInfo Bcon){
+		BeaconInfo beaconInfo = new BeaconInfo();
+		PlcInfo foundplace = placeInfoRepository.findOne(plcId);
 		
-		PlaceInfo foundplace = placeInfoRepository.findOne(plcId);
+		beaconInfo=Bcon;
 		
 		//dosent exist plcId(해당 plcId가 없으면)
 		if(foundplace == null)
 		{
-			System.out.println("place ★★★★★★Plc Id 일치하는 정보 없음 ★★★★★★");
+			System.out.println("bcon_sign ★★★★★★Plc 아이디 없음 ★★★★★★");
 			return "fail";
 		}
 		
@@ -156,12 +165,12 @@ public class MainController {
 		else
 		{
 			//해당하는 placeInfo에 비콘 정보를 업데이트 하고 
-			foundplace.setbeaconInfo(Bcon);
+			foundplace.setbeaconInfos(Bcon);
 			
 			//다시 테이블에 저장
 			placeInfoRepository.save(foundplace);
 			
-			System.out.println("place ★★★★★★PlaceInfo 정보 없데이트 ★★★★★★");
+			System.out.println("bcon_sign ★★★★★★PlcInfo 업데이트 ★★★★★★");
 			
 			return "success";
 		}
@@ -170,7 +179,7 @@ public class MainController {
 	//2016.07.29 seulki
 	//search placeId and return (플레이스 아이디로 검색 후 해당하는 플레이스 정보를 반환)
 	@RequestMapping("/users/{plcId}")
-	public @ResponseBody PlaceInfo getPlace(@PathVariable String plcId){
+	public @ResponseBody PlcInfo getPlace(@PathVariable String plcId){
 		return placeInfoRepository.findOne(plcId);
 	}
 	
