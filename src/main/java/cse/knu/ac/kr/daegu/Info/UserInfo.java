@@ -27,7 +27,10 @@ public class UserInfo {
    				inverseJoinColumns=@JoinColumn(name="USERINFO_userId"))
    private List<PlcInfo> plcInfos = new ArrayList<>();
 
-    
+   public void addPlcinofs(PlcInfo plcinfo){
+	   plcInfos.add(plcinfo);
+   }
+   
     public String getuserName() {
         return userName;
     }
