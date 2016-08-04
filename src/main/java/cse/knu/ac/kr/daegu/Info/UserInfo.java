@@ -3,6 +3,7 @@ package cse.knu.ac.kr.daegu.Info;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -17,7 +18,9 @@ import javax.persistence.ManyToMany;
 public class UserInfo {
 
 	@Id
+	@Column(nullable=false)
     private String userId;
+	@Column(nullable=false)
     private String userPw;
     private String userName;
     
