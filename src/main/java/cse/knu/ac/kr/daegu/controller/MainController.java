@@ -1,5 +1,6 @@
 package cse.knu.ac.kr.daegu.controller;
 
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +12,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import cse.knu.ac.kr.daegu.Info.BeaconInfo;
+import cse.knu.ac.kr.daegu.Info.MngInfo;
 import cse.knu.ac.kr.daegu.Info.PlcInfo;
 import cse.knu.ac.kr.daegu.Info.UserInfo;
+import cse.knu.ac.kr.daegu.repo.BeaconInfoRepository;
+import cse.knu.ac.kr.daegu.repo.MngInfoRepository;
 import cse.knu.ac.kr.daegu.repo.PlcInfoRepository;
 import cse.knu.ac.kr.daegu.repo.UserInfoRepository;
-
 
 @RestController
 public class MainController {
@@ -24,23 +27,28 @@ public class MainController {
 	private UserInfoRepository userInfoRepository;
 	@Autowired
 	private PlcInfoRepository placeInfoRepository;
+	@Autowired
+	private MngInfoRepository mngInfoRepository;
+	@Autowired
+	private BeaconInfoRepository beaconInfoRepository;
 
 	
 	//<login>
-	// 2016.07.27 seulki
-	// login_place
-	@RequestMapping("/users_login/place")
-	   public @ResponseBody String login(@RequestBody PlcInfo place) {
-	      PlcInfo foundPlace = placeInfoRepository.findOne(place.getPlcId());
-
+	//2016.08.03 seulki
+	//login_BUser
+	@RequestMapping("/users_login/mng")
+	   public @ResponseBody String login(@RequestBody MngInfo Buser) {
+	     //PlcInfo foundPlace = placeInfoRepository.findOne(place.getPlcId());
+		MngInfo foundBuser = mngInfoRepository.findOne(Buser.getMngId());
+		
 	      // Doesn't exist user info (플레이 정보가 없을 경우)
-	      if (foundPlace == null){
+	      if (foundBuser == null){
 	         System.out.println("place★★★★★★아이디 없음★★★★★★");
 	         return "login_fail";
 	      }
 	      else {
 	         // collect password (패스워드가 일치할 경우)
-	         if (place.getPlcPw().equals(foundPlace.getPlcPw())){
+	         if (Buser.getMngPw().equals(foundBuser.getMngPw())){
 	            System.out.println("place★★★★★★로그인 성공★★★★★★");
 	            return "login_success";
 	         }
@@ -55,7 +63,7 @@ public class MainController {
 	   }
 
 	   // 2016.07.27 seulki
-	   // login_user
+	   // login_Nuser
 	   @RequestMapping("/users_login/user")
 	   public @ResponseBody String login(@RequestBody UserInfo user) {
 	      UserInfo foundUser = userInfoRepository.findOne(user.getUserId());
@@ -81,8 +89,8 @@ public class MainController {
 	      }
 	   }
 
-	   // 2016.07.27 seulki
-	   // add new user (새로운 유저 추가)
+	   // 2016.08.03 seulki
+	   // add new Nuser (새로운 Nuser 추가)
 	   @RequestMapping(value = "/users/user", method = RequestMethod.POST, consumes = "application/json")
 	   public @ResponseBody String addUser(@RequestBody UserInfo user) {
 	      //doesnt exist same information (일치하는 정보가 없다)
@@ -102,16 +110,16 @@ public class MainController {
 	   }
 
 	   // 2016.07.27 seulki
-	   // add new place (새로운 place 추가)
-	   @RequestMapping(value = "/users/place", method = RequestMethod.POST, consumes = "application/json")
-	   public @ResponseBody String addUser(@RequestBody PlcInfo place) {
+	   // add new Buser (새로운 Buser 추가)
+	   @RequestMapping(value = "/users/mng", method = RequestMethod.POST, consumes = "application/json")
+	   public @ResponseBody String addUser(@RequestBody MngInfo Buser) {
 
 	      //doesnt exist same information (일치하는 정보가 없다)
-	      if (placeInfoRepository.findOne(place.getPlcId()) == null) {
+	      if (mngInfoRepository.findOne(Buser.getMngId()) == null) {
 	         System.out.println("place★★★★★★★회원가입 성공★★★★★");
 	         
 	         //save information (정보를 저장하고)
-	         placeInfoRepository.save(place);
+	         mngInfoRepository.save(Buser);
 
 	         return "signup_success";
 	      }
@@ -125,18 +133,125 @@ public class MainController {
 	}
 
 	// 2016.07.25 seulki
-	// return all user list (모든 유저 리스트 반환)
-	@RequestMapping("/users")
+	// return all user list (모든 user 리스트 반환)
+	@RequestMapping("/users/a_users")
 	public @ResponseBody List<UserInfo> getUserList() {
 		return userInfoRepository.findAll();
 	}
-
+	
+	//2016.08.04 seulki
+	//return all mng list (모든 mng리스트 반환)
+	@RequestMapping("/users/a_mng")
+	public @ResponseBody List<MngInfo> getMngList()
+	{
+		return mngInfoRepository.findAll();
+	}
+	
+	
 	// 2016.07.25 seulki
 	// search userId and return (userId로 검색해서 반환)
 	@RequestMapping("/users/{userId}")
 	public @ResponseBody UserInfo getUser(@PathVariable String userId) {
 		return userInfoRepository.findOne(userId);
 	}
+	
+	//2016.08.04
+	//search mngId and return (mngId로 검색해서 반환)
+	@RequestMapping("/users/{mngId}")
+	public @ResponseBody MngInfo getMng(@PathVariable String mngId){
+		return mngInfoRepository.findOne(mngId);
+	}
+	
+	//2016.08.03 seulki
+	//search plcId and return
+	@RequestMapping("/place/{plcId}")
+	public @ResponseBody PlcInfo getPlace(@PathVariable String plcId)
+	{
+		return placeInfoRepository.findOne(plcId);
+	}
+	
+	//2016.08.03 seulki
+	//join place (Nuser가 플레이스에 가입) 
+	/*@RequestMapping("/place/sing_in")
+	public @ResponseBody String signin_place(@RequestBody UserInfo user, @RequestBody PlcInfo place)
+	{
+		UserInfo founduser = userInfoRepository.findOne(user.getUserId());
+		PlcInfo foundplace = placeInfoRepository.findOne(place.getPlcId());
+		
+		founduser.addPlcinofs(place);
+		
+		
+		return "Success!";
+	}*/
+	
+	
+	//2016.08.03 seulki
+	//register place,update mnginfo using plcId 
+	@RequestMapping("/place/register")
+	public @ResponseBody String register_place(@RequestBody PlcInfo newplace, @RequestBody MngInfo manager)
+	{
+		MngInfo foundmanager = mngInfoRepository.findOne(manager.getMngId());
+
+		if(foundmanager==null)
+		{
+			System.out.println("------------manager 정보 없음~--------------");
+			return "fail";
+		}
+		
+		//register place
+		foundmanager.addPlcinofs(newplace);
+		placeInfoRepository.save(newplace);
+		
+		//update mnginfo
+		mngInfoRepository.save(foundmanager);
+
+		if (placeInfoRepository.findOne(newplace.getPlcId()) != null) {
+			
+			System.out.println("------------------장소 등록 성공!-----------------");
+
+			return "success";
+		}
+
+		else
+			return "fail";
+
+	}
+	
+	//2016.08.03 seulki
+	//Register Beacon and update placeinfo
+	@RequestMapping("place/register/bcon")
+	public @ResponseBody String register_bcon(@RequestBody BeaconInfo beacon, @RequestBody PlcInfo place)
+	{
+		BeaconInfo newBeacon = beacon;
+		PlcInfo foundplace = placeInfoRepository.findOne(place.getPlcId());
+		
+		
+		if(foundplace==null)
+		{
+			System.out.println("-------플레이스 정보 없음!-------------");
+			return "fail";
+		}
+		
+		//register beacon
+		foundplace.addBeaconInfos(newBeacon);
+		beaconInfoRepository.save(beacon);
+		
+		//update placeinfo
+		placeInfoRepository.save(foundplace);
+		
+		
+		if(beaconInfoRepository.findOne(beacon.getbeaMcadrs()) != null){
+			System.out.println("------------------비콘 등록 성공!-----------------");
+			
+			return "success";
+			
+		}
+		else
+			return "fail";
+		
+	}
+	
+	
 
 	
 	//2016.07.28 seulki
@@ -145,7 +260,7 @@ public class MainController {
 		return ;
 	}
 	
-	//2016.07.28 seulki
+	/*//2016.07.28 seulki
 	//place가 비콘등록
 	@RequestMapping("/mainscreen/{plcId}/bcon_sign")
 	public @ResponseBody String bcon_sign(@PathVariable String plcId, @RequestBody BeaconInfo Bcon){
@@ -175,14 +290,8 @@ public class MainController {
 			return "success";
 		}
 	}
-	
-	//2016.07.29 seulki
-	//search placeId and return (플레이스 아이디로 검색 후 해당하는 플레이스 정보를 반환)
-	@RequestMapping("/users/{plcId}")
-	public @ResponseBody PlcInfo getPlace(@PathVariable String plcId){
-		return placeInfoRepository.findOne(plcId);
-	}
-	
+	*/
+
 	//2016.07.29 seulki
 //	@RequestMapping("/뭘 써야 할까....")
 //	public @ResponseBody 
