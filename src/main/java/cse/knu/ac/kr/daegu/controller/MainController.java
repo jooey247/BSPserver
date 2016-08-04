@@ -133,12 +133,21 @@ public class MainController {
 	}
 
 	// 2016.07.25 seulki
-	// return all user list (모든 Nuser 리스트 반환)
-	@RequestMapping("/users/Nusers")
+	// return all user list (모든 user 리스트 반환)
+	@RequestMapping("/users/a_users")
 	public @ResponseBody List<UserInfo> getUserList() {
 		return userInfoRepository.findAll();
 	}
-
+	
+	//2016.08.04 seulki
+	//return all mng list (모든 mng리스트 반환)
+	@RequestMapping("/users/a_mng")
+	public @ResponseBody List<MngInfo> getMngList()
+	{
+		return mngInfoRepository.findAll();
+	}
+	
+	
 	// 2016.07.25 seulki
 	// search userId and return (userId로 검색해서 반환)
 	@RequestMapping("/users/{userId}")
@@ -146,8 +155,16 @@ public class MainController {
 		return userInfoRepository.findOne(userId);
 	}
 	
+	//2016.08.04
+	//search mngId and return (mngId로 검색해서 반환)
+	@RequestMapping("/users/{mngId}")
+	public @ResponseBody MngInfo getMng(@PathVariable String mngId){
+		return mngInfoRepository.findOne(mngId);
+	}
+	
 	//2016.08.03 seulki
-	@RequestMapping("/users/{plcId}")
+	//search plcId and return
+	@RequestMapping("/place/{plcId}")
 	public @ResponseBody PlcInfo getPlace(@PathVariable String plcId)
 	{
 		return placeInfoRepository.findOne(plcId);
@@ -224,7 +241,7 @@ public class MainController {
 		
 		
 		if(beaconInfoRepository.findOne(beacon.getbeaMcadrs()) != null){
-			System.out.println("------------------비콘   등록 성공!-----------------");
+			System.out.println("------------------비콘 등록 성공!-----------------");
 			
 			return "success";
 			
