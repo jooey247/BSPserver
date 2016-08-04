@@ -187,7 +187,7 @@ public class MainController {
 	
 	//2016.08.03 seulki
 	//register place,update mnginfo using plcId 
-	@RequestMapping("/place/register")
+	@RequestMapping(value = "/place/register",method = RequestMethod.POST, consumes = "application/json")
 	public @ResponseBody String register_place(@RequestBody PlcInfo newplace, @RequestBody MngInfo manager)
 	{
 		MngInfo foundmanager = mngInfoRepository.findOne(manager.getMngId());
@@ -219,7 +219,7 @@ public class MainController {
 	
 	//2016.08.03 seulki
 	//Register Beacon and update placeinfo
-	@RequestMapping("place/register/bcon")
+	@RequestMapping(value = "place/register/bcon", method = RequestMethod.POST, consumes = "application/json")
 	public @ResponseBody String register_bcon(@RequestBody BeaconInfo beacon, @RequestBody PlcInfo place)
 	{
 		BeaconInfo newBeacon = beacon;
