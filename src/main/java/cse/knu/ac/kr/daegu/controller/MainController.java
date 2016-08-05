@@ -147,6 +147,14 @@ public class MainController {
 		return mngInfoRepository.findAll();
 	}
 	
+	//2016.08.04 seulki
+	//return all place list
+	@RequestMapping("/place/a_plc")
+	public @ResponseBody List<PlcInfo> getPlcList()
+	{
+		return placeInfoRepository.findAll();
+	}
+	
 	
 	// 2016.07.25 seulki
 	// search userId and return (userId로 검색해서 반환)
@@ -163,7 +171,7 @@ public class MainController {
 	}
 	
 	//2016.08.03 seulki
-	//search plcId and return
+	//search plcId and return (plcId로 검색해서 반환)
 	@RequestMapping("/place/{plcId}")
 	public @ResponseBody PlcInfo getPlace(@PathVariable String plcId)
 	{
@@ -187,7 +195,7 @@ public class MainController {
 	
 	//2016.08.03 seulki
 	//register place,update mnginfo using plcId 
-	@RequestMapping("/place/register")
+	@RequestMapping(value = "/place/register" ,method = RequestMethod.POST, consumes = "application/json")
 	public @ResponseBody String register_place(@RequestBody PlcInfo newplace, @RequestBody MngInfo manager)
 	{
 		MngInfo foundmanager = mngInfoRepository.findOne(manager.getMngId());
@@ -219,7 +227,7 @@ public class MainController {
 	
 	//2016.08.03 seulki
 	//Register Beacon and update placeinfo
-	@RequestMapping("place/register/bcon")
+	@RequestMapping(value="place/register/bcon",method = RequestMethod.POST, consumes = "application/json")
 	public @ResponseBody String register_bcon(@RequestBody BeaconInfo beacon, @RequestBody PlcInfo place)
 	{
 		BeaconInfo newBeacon = beacon;
